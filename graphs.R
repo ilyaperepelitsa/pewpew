@@ -23,7 +23,7 @@ summary(hearings25$worddf)
 summary(hearings25$speaker_lastnamedf)
 # order(summary(hearings25$speaker_titledf))
 
-summary(hearings25$speaker_titledf)[c(order(summary(hearings25$speaker_titledf)))]
+
 # hearings25[,1:13]
 
 
@@ -43,8 +43,8 @@ summary(hearings25$gender)
 
 hearings25$speaker_titledf <- as.factor(hearings25$speaker_titledf)
 summary(hearings25$speaker_titledf)
-
-hearings25$worddf
+summary(hearings25$speaker_titledf)[c(order(summary(hearings25$speaker_titledf)))]
+# hearings25$worddf
 
 
 
