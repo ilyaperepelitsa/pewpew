@@ -2,12 +2,41 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Hello World</title>
+        <title>Text analysis of Congressional Hearings published by US GPO</title>
+        <link rel = "stylesheet" type = "text/css" href = "main.css">
     </head>
     <body>
-        <h1>Hello World</h1>
+        <h1>Establishing framework of large-scale text analysis using US GPO Congress Hearings files</h1>
         <p>
-            My web page
-        </p>
+            The project's idea originated when I noticed [laughter] in some congressional hearings documents. 
+            The idea of this project is to handle large-scale text processing via the following steps:
+            <ul>
+			  <li>Download html documents with a crawler</li>
+			  <li>Read the documents with Python</li>
+			  <li>Pull paragraphs with Python regular expressions and create a csv file for R</li>
+			  <li>Break down the paragraphs into individual words with proper indexing</li>
+			  <li>Calculate various cumulative word counts:
+		            <ul>
+					  <li>Per hearing</li>
+					  <li>Per chamber (House/Senate)</li>
+					  <li>Per committee etc.</li>
+			  
+			</ul>
+		</p>
+        <h1>Working graph prototypes</h1>
+        <p> While the full scale model is currently being setup, some of the initial graphs are listed below. A sample of 24 documents was used resulting in a cleaned up 400k row data frame. Full set includes 25k documents and will constitute approximately half a billion rows.</p>
+        
+        <p> Some general observations.</p>
+        <img src = "./publish/first.png">
+        <img src = "./publish/second.png">
+        <img src = "./publish/third.png">
+        <p> More granular data - dealing with congressmen.</p>
+        <img src = "./publish/fourth.png">
+        <img src = "./publish/fourth1.png">
+        <p> And finally some laughter.</p>
+        <img src = "./publish/fourth.png">
+        <img src = "./publish/fourth1.png">
+
+        
     </body>
 </html>
