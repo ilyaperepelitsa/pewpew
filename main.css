@@ -5,3 +5,11 @@ img {
 body {
 	color: #373534
 }
+
+h1, h2 {
+	color: black
+}
+
+p, h1 {
+    font-family: "Lucida Console"
+}
