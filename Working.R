@@ -14,11 +14,7 @@ working_hearings <- read.csv(paste(getwd(),
 
 
 pw <- {
-<<<<<<< HEAD
-  "pass"
-=======
-  "PASSS"
->>>>>>> 55123d1916ff575c512ebc9fb277e532eb521ce9
+
 }
 
 
