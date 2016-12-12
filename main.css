@@ -3,13 +3,10 @@ img {
 }
 
 body {
-	color: #373534
+	color: #373534;
+	font-family: "Lucida Console"
 }
 
 h1, h2 {
 	color: black
-}
-
-p, h1 {
-    font-family: "Lucida Console"
 }
