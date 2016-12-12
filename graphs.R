@@ -126,13 +126,6 @@ total_words <- total_words %>% ungroup %>%  arrange(time, indexdf) %>%
 total_words$datedf <- as.Date(total_words$datedf)
 attach(total_words)
 
-, 
-,
-,
-min(total_words$datedf), 
-" to ",
-max(total_words$datedf), 
-"."
 
 first <- total_words %>% ggplot(aes(x = time,
                            y = words_chamber,
