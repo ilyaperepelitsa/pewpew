@@ -4,7 +4,10 @@ img {
 
 body, li {
 	color: #373534;
-	font-family: "Lucida Console";
+	font-family: "Lucida Console"
+}
+
+body {
 	background-color: #F0F0F0
 }
 
