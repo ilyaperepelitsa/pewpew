@@ -6,6 +6,7 @@ library(gridExtra)
 source("hear_theme.R")
 install.packages("ggrepel")
 library(ggrepel)
+options(expressions=10000)
 
 `%notin%` = function(x,y) !(x %in% y)
 hearings25 <- read.csv(paste(getwd(), "/first25.csv", sep = ""))
@@ -153,14 +154,14 @@ first <- total_words %>% ggplot(aes(x = time,
   #   segment.color = NA)
 
 
-for (i in 1:length(unique(chamberdf))){
+for (i in 1:length(levels(chamberdf))){
   
    first <- first +
 
 
      geom_text_repel(
        data = subset(total_words %>%
-                       filter(chamberdf == as.character(unique(chamberdf)[i])),
+                       filter(chamberdf == as.character(levels(chamberdf)[i])),
                      words_chamber == max(words_chamber)),
        aes(label = paste("", words_chamber)),
        size = 4,
@@ -171,7 +172,7 @@ for (i in 1:length(unique(chamberdf))){
      
        geom_text_repel(
        data = subset(total_words %>%
-                       filter(chamberdf ==  as.character(unique(chamberdf)[i])),
+                       filter(chamberdf ==  as.character(levels(chamberdf)[i])),
                      words_chamber == max(words_chamber)),
        aes(label = paste("", chamberdf)),
        size = 4,
@@ -182,7 +183,7 @@ for (i in 1:length(unique(chamberdf))){
 
 
 
-ggsave(paste(getwd(), "/publish/first.png", sep = ""), first , height = 7, width = 10)
+ggsave(paste(getwd(), "/publish/cleaner_first.png", sep = ""), first , height = 7, width = 10)
 
 
 
@@ -205,9 +206,33 @@ second <- total_words %>% ggplot(aes(x = time,
   scale_x_continuous(expand = c(0, 0)) + 
   scale_y_continuous(expand = c(0, 0))
 
+for (i in 1:length(levels(sessiondf))){
+  
+  second <- second +
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(sessiondf == as.character(levels(sessiondf)[i])),
+                    session_words == max(session_words)),
+      aes(label = paste("", session_words)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA) +
+    
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(sessiondf ==  as.character(levels(sessiondf)[i])),
+                    session_words == max(session_words)),
+      aes(label = paste("", sessiondf)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA)}
 
 
-ggsave(paste(getwd(), "/publish/second.png", sep = ""), second, height = 7, width = 10)
+ggsave(paste(getwd(), "/publish/cleaner_second.png", sep = ""), second, height = 7, width = 10)
 
 
 fourth <- total_words %>% ggplot(aes(x = time,
@@ -230,7 +255,34 @@ fourth <- total_words %>% ggplot(aes(x = time,
   scale_x_continuous(expand = c(0, 0)) + 
   scale_y_continuous(expand = c(0, 0))
 # + facet_grid(chamberdf~.)
-ggsave(paste(getwd(), "/publish/fourth.png", sep = ""), fourth, height = 14, width = 10)
+
+for (i in 1:length(levels(namedf))){
+  
+  fourth <- fourth +
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(namedf == as.character(levels(namedf)[i])),
+                    name_words == max(name_words)),
+      aes(label = paste("", name_words)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA) +
+    
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(namedf ==  as.character(levels(namedf)[i])),
+                    name_words == max(name_words)),
+      aes(label = paste("", namedf)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA)}
+
+
+ggsave(paste(getwd(), "/publish/cleaner_fourth.png", sep = ""), fourth, height = 14, width = 10)
 
 fourth1 <- total_words %>% ggplot(aes(x = time,
                                      y = name_words,
@@ -251,8 +303,35 @@ fourth1 <- total_words %>% ggplot(aes(x = time,
   hear_theme + 
   scale_x_continuous(expand = c(0, 0)) + 
   scale_y_continuous(expand = c(0, 0))
+
+for (i in 1:length(levels(namedf))){
+  
+  fourth1 <- fourth1 +
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(namedf == as.character(levels(namedf)[i])),
+                    name_words == max(name_words)),
+      aes(label = paste("", name_words)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA) +
+    
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(namedf ==  as.character(levels(namedf)[i])),
+                    name_words == max(name_words)),
+      aes(label = paste("", namedf)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA)}
+
+
 # + facet_grid(chamberdf~.)
-ggsave(paste(getwd(), "/publish/fourth1.png", sep = ""), fourth1, height = 14, width = 10)
+ggsave(paste(getwd(), "/publish/cleaner_fourth1.png", sep = ""), fourth1, height = 14, width = 10)
 
 
 third <- total_words %>% ggplot(aes(x = time,
@@ -273,7 +352,32 @@ third <- total_words %>% ggplot(aes(x = time,
   hear_theme + 
   scale_x_continuous(expand = c(0, 0)) + 
   scale_y_continuous(expand = c(0, 0))
-ggsave(paste(getwd(), "/publish/third.png", sep = ""), third, height = 14, width = 10)
+
+for (i in 1:length(levels(namedf))){
+  
+  third <- third +
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(committeedf == as.character(levels(committeedf)[i])),
+                    committee_words == max(committee_words)),
+      aes(label = paste("", committee_words)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA) +
+    
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(committeedf ==  as.character(levels(committeedf)[i])),
+                    committee_words == max(committee_words)),
+      aes(label = paste("", committeedf)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA)}
+ggsave(paste(getwd(), "/publish/cleaner_third.png", sep = ""), third, height = 14, width = 10)
 
 
 fifth <- total_words %>% ggplot(aes(x = time,
@@ -294,8 +398,34 @@ fifth <- total_words %>% ggplot(aes(x = time,
   hear_theme + 
   scale_x_continuous(expand = c(0, 0)) + 
   scale_y_continuous(expand = c(0, 0))
+
+for (i in 1:length(levels(namedf))){
+  
+  fourth <- fourth +
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(namedf == as.character(levels(namedf)[i])),
+                    laugh_words == max(laugh_words)),
+      aes(label = paste("", laugh_words)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA) +
+    
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(namedf ==  as.character(levels(namedf)[i])),
+                    laugh_words == max(laugh_words)),
+      aes(label = paste("", namedf)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA)}
+
 # + facet_grid(chamberdf~.)
-ggsave(paste(getwd(), "/publish/fourth1.png", sep = ""), fourth, height = 14, width = 10)
+ggsave(paste(getwd(), "/publish/cleaner_fourth1.png", sep = ""), fourth, height = 14, width = 10)
 
 sixth <- total_words %>% ggplot(aes(x = time,
                                     y = laugh_committee,
@@ -314,8 +444,34 @@ sixth <- total_words %>% ggplot(aes(x = time,
   labs(caption = "US Government Publishing Office : \n https://www.gpo.gov/fdsys/browse/collection.action?collectionCode=CHRG") +
   hear_theme + 
   scale_x_continuous(expand = c(0, 0)) 
+
+for (i in 1:length(levels(namedf))){
+  
+  sixth <- sixth +
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(committeedf == as.character(levels(committeedf)[i])),
+                    laugh_committee == max(laugh_committee)),
+      aes(label = paste("", laugh_committee)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA) +
+    
+    
+    
+    geom_text_repel(
+      data = subset(total_words %>%
+                      filter(committeedf ==  as.character(levels(committeedf)[i])),
+                    laugh_committee == max(laugh_committee)),
+      aes(label = paste("", committeedf)),
+      size = 4,
+      nudge_x = 0,
+      segment.color = NA)}
+
 # + facet_grid(chamberdf~.)
-ggsave(paste(getwd(), "/publish/sixth.png", sep = ""), sixth, height = 7, width = 10)
+ggsave(paste(getwd(), "/publish/cleaner_sixth.png", sep = ""), sixth, height = 7, width = 10)
 
 sixth1 <- total_words %>% ggplot(aes(x = time,
                                     y = laugh_committee,
