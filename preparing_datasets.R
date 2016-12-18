@@ -42,11 +42,20 @@ sample_hearings$date <- as.Date(sample_hearings$date, "%B %d, %Y")
   
 sample_hearings <-hearings %>% 
   filter(paragraph != "") %>% 
+  filter(document > 0 & document < 25) %>% 
   select(-(c(path, link)))
 
 
 # hearings <- hearings %>% filter(date > "1990-01-01")
 ### CREATING  VARIABLES  AND CLEANING UP######
+
+
+sample_hearings$countlaugh <- lengths(regmatches(sample_hearings$meta, 
+                                                 gregexpr("laughter", sample_hearings$meta, 
+                                                          ignore.case = TRUE))) + 
+  lengths(regmatches(sample_hearings$paragraph, 
+                     gregexpr("laughter", sample_hearings$paragraph, 
+                              ignore.case = TRUE)))
 
 
 
@@ -58,6 +67,7 @@ for(i in 1:length(sample_hearings$meta)) {
     lengths(regmatches(sample_hearings$paragraph[i], 
                        gregexpr("laughter", sample_hearings$paragraph[i], 
                                 ignore.case = TRUE)))
+  print(i)
 }
 
 sample_hearings$name <- paste(sample_hearings$speaker_title, sample_hearings$speaker_lastname)
