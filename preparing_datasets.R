@@ -18,7 +18,7 @@ write.csv(sample_hearings,
             "sample_hearings_done.csv", 
           sep = "/"), 
           row.names = FALSE)
-
+hearings <- read.csv("~/variables/tagged_hearings.csv")
 # hearings <- read.csv("~/variables/tagged_hearings.csv")
 # 
 sample_hearings <- read.csv(paste(getwd(), "sample_hearings_done.csv", sep = "/"))
@@ -40,7 +40,7 @@ sample_hearings$date <- as.Date(sample_hearings$date, "%B %d, %Y")
 
 
   
-sample_hearings <- sample_hearings %>% 
+sample_hearings <-hearings %>% 
   filter(paragraph != "") %>% 
   select(-(c(path, link)))
 
