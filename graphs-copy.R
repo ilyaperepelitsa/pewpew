@@ -1,9 +1,10 @@
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(stringr)
 install.packages("gridExtra")
 library(gridExtra)
-source("~/ilyaperepelitsa.github.io/hear_theme.R")
+source("/users/ilyaperepelitsa/quant/ilyaperepelitsa.github.io/hear_theme.R")
 install.packages("ggrepel")
 library(ggrepel)
 install.packages("directlabels")
@@ -16,6 +17,7 @@ library(RColorBrewer)
 
 `%notin%` = function(x,y) !(x %in% y)
 hearings25 <- read.csv(paste(getwd(), "pew123.txt", sep = "/"))
+hearings25 <- read.csv("/users/ilyaperepelitsa/quant/total.csv", sep = ",")
 write.csv(total_words, "total.csv", row.names = FALSE, sep = "/")
 
 #### cleaning up the punctiation split output #### 
@@ -547,5 +549,161 @@ second <- total_words %>% ggplot(aes(x = time,
 
 ggsave(paste(getwd(), "/ilyaperepelitsa.github.io/cleaner_second1.pdf", sep = ""), second, height = 7, width = 10)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+laughterhearings <- hearings25 %>% select(sessiondf, chamberdf, committeedf, documentdf, datedf, linedf, namedf, gender, linelaughdf, speaker_titledf)
+laughterhearings1 <- unique(laughterhearings)
+
+laughterhearings1 %>% ggplot(aes(x = gender, y = linelaughdf)) + geom_bar(position = "stack")
+laughterhearings1 %>% ggplot(aes(x = linelaughdf)) + geom_bar(position = "stack")
+laughterhearings1 %>% ggplot(aes(x = linelaughdf, fill = chamberdf)) + geom_bar(position = "fill")
+
+
+order_plot <- laughterhearings1 %>%
+  group_by(committeedf) %>%                              # calculate the counts
+  summarize(counts = sum(linelaughdf)) %>%
+  arrange(-counts) %>%                                # sort by counts
+  mutate(committeedf = factor(committeedf, committeedf)) 
+
+ggplot(aes(x = committeedf, y = linelaughdf)) + geom_bar(stat = "identity") + coord_flip()
+
+# order_vector <- data.frame(order_plot[,1])
+class(order_vector)
+unname(unlist(order_plot[,1]))
+
+laughterhearings1$committeedf <- ordered(laughterhearings1$committeedf, levels = rev(unname(unlist(order_plot[,1]))))
+laughterhearings1$datedf <- as.Date(laughterhearings1$datedf)
+hearings25$datedf <- as.Date(hearings25$datedf)
+
+
+laughterhearings1 %>% filter(linelaughdf > 0) %>% 
+  ggplot(aes(x = committeedf, y = linelaughdf, fill = gender)) + 
+  geom_bar(stat = "identity") + coord_flip() + 
+  hear_theme + 
+  scale_fill_brewer(palette="Pastel1") + 
+  ggtitle("Number of times laughter was heard in a Congress Committee", 
+          subtitle = paste(length(unique(laughterhearings1$documentdf)),
+                           " documents sample from ", 
+                           length(unique(laughterhearings1$sessiondf)),
+                           " sessions of US Congress from ",
+                           min(laughterhearings1$datedf),
+                           " to ",
+                           max(laughterhearings1$datedf), 
+                           ".",
+                           sep = "")) + 
+  labs(caption = "US Government Publishing Office : \n https://www.gpo.gov/fdsys/browse/collection.action?collectionCode=CHRG") +
+  hear_theme + 
+  scale_y_continuous(expand = c(0, 0)) 
+
+laughterhearings1 %>% filter(linelaughdf > 0 & gender %in% c("Male", "Female")) %>% 
+  ggplot(aes(x = committeedf, y = linelaughdf, fill = gender)) + 
+  geom_bar(stat = "identity") + coord_flip() + 
+  hear_theme + 
+  scale_fill_brewer(palette="Pastel1") + 
+  ggtitle("Number of times laughter was heard in a Congress Committee", 
+          subtitle = paste(length(unique(laughterhearings1$documentdf)),
+                           " documents sample from ", 
+                           length(unique(laughterhearings1$sessiondf)),
+                           " sessions of US Congress from ",
+                           min(laughterhearings1$datedf),
+                           " to ",
+                           max(laughterhearings1$datedf), 
+                           ".",
+                           sep = "")) + 
+  labs(caption = "US Government Publishing Office : \n https://www.gpo.gov/fdsys/browse/collection.action?collectionCode=CHRG") +
+  hear_theme + 
+  scale_y_continuous(expand = c(0, 0)) 
+
+
+
+
+
+
+
+new2 <- hearings25 %>%
+  filter(gender %in% c("Male", "Female")) %>% 
+  group_by(committeedf, gender) %>%                              # calculate the counts
+  summarize(counts = n()) 
+new2 <- new2 %>%  spread(gender, counts)
+new2[is.na(new2)] <- 0
+new2$total <- new2$Female + new2$Male 
+new2$Female <- new2$Female/new2$total
+new2$Male <- new2$Male/new2$total
+
+new2 <- data.frame(new2)
+new2 <- new2 %>% arrange(-Female)
+
+hearings25$committeedf <- ordered(hearings25$committeedf, levels = rev(new2[,1]))
+
+
+
+# laughterhearings1$committeedf <- ordered(laughterhearings1$committeedf, levels = rev(new2[,1])
+
+
+
+
+words_gender <- hearings25 %>% filter(gender %in% c("Male", "Female")) 
+words_gender %>% 
+  ggplot(aes(x = committeedf, fill = gender)) + 
+  geom_bar(position = "fill") + coord_flip() + 
+  hear_theme + 
+  scale_fill_brewer(palette="Pastel1") + 
+  ggtitle("Women speaking in Congress.", 
+          subtitle = paste("Words said by speakers with titles 'Mr', 'Ms', 'Mrs' in a ", length(unique(words_gender$documentdf)),
+                           " documents sample from ", 
+                           length(unique(words_gender$sessiondf)),
+                           " sessions of US Congress from ",
+                           min(words_gender$datedf),
+                           " to ",
+                           max(words_gender$datedf), 
+                           ". \n Total words (excluding zipf-like words): ", dim(words_gender)[1], 
+                           sep = "")) + 
+  labs(caption = "US Government Publishing Office : \n https://www.gpo.gov/fdsys/browse/collection.action?collectionCode=CHRG") +
+  hear_theme + 
+  scale_y_continuous(expand = c(0, 0), labels = scales::percent) 
+ 
   
+ggsave("/users/ilyaperepelitsa/ilyaperepelitsa.github.io/gender3.pdf", gender2, height = 7, width = 10)
+
+
+
+
+
+laughterhearings <- hearings25 %>% select(sessiondf, chamberdf, committeedf, documentdf, datedf, linedf, namedf, gender, linelaughdf, speaker_titledf) %>% 
+  filter(gender %in% c("Male", "Female"))
+laughterhearings1 <- unique(laughterhearings)
+
+laughterhearings1 %>% 
+  ggplot(aes(x = committeedf, fill = gender)) + 
+  geom_bar(position = "fill") + coord_flip() + 
+  hear_theme + 
+  scale_fill_brewer(palette="Pastel1") + 
+  ggtitle("Women speaking in Congress.", 
+          subtitle = paste("Words said by speakers with titles 'Mr', 'Ms', 'Mrs' in a ", length(unique(words_gender$documentdf)),
+                           " documents sample from ", 
+                           length(unique(words_gender$sessiondf)),
+                           " sessions of US Congress from ",
+                           min(words_gender$datedf),
+                           " to ",
+                           max(words_gender$datedf), 
+                           ". \n Total words (excluding zipf-like words): ", dim(words_gender)[1], 
+                           sep = "")) + 
+  labs(caption = "US Government Publishing Office : \n https://www.gpo.gov/fdsys/browse/collection.action?collectionCode=CHRG") +
+  hear_theme + 
+  scale_y_continuous(expand = c(0, 0), labels = scales::percent) 
+
 

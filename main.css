@@ -14,3 +14,9 @@ body {
 h1, h2 {
 	color: black
 }
+
+.full
+{
+  width: 90%;
+  z-index: 0;
+}

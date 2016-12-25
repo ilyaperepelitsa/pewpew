@@ -58,7 +58,6 @@ sample_hearings$countlaugh <- lengths(regmatches(sample_hearings$meta,
                               ignore.case = TRUE)))
 
 
-
 for(i in 1:length(sample_hearings$meta)) {
  
   sample_hearings$countlaugh[i] <- lengths(regmatches(sample_hearings$meta[i], 
